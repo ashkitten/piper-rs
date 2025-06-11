@@ -13,7 +13,5 @@ homepage = "https://github.com/thewh1teagle/piper-rs"
 include = ["sonic/*.c", "sonic/*.h", "sonic/Makefile", "src/*.rs", "build.rs"]
 
 [build-dependencies]
-cc = "1.0.79"
-bindgen = { version = "0.59.1", default-features = false, features = [
-    "runtime",
-] }
+cc = "1.2.26"
+bindgen = { version = "0.72.0", default-features = false, features = ["runtime"] }

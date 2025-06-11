@@ -14,8 +14,8 @@ repository = "https://github.com/thewh1teagle/piper-rs"
 # Local crates
 piper-rs = { path = "../../", version = "0.1.9", default-features = false }
 
-console = "0.15.10"
-clap = { version = "4.5.22", features = ["derive"] }
+console = "0.15.11"
+clap = { version = "4.5.40", features = ["derive"] }
 eyre = "0.6.12"
 rodio = "0.20.1"
 tracing = "0.1.41"
