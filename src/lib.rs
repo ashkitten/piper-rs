@@ -109,22 +109,18 @@ pub struct ESpeakConfig {
 
 #[derive(Deserialize, Default, Clone)]
 pub struct InferenceConfig {
-    noise_scale: f32,
-    length_scale: f32,
-    noise_w: f32,
+    pub noise_scale: f32,
+    pub length_scale: f32,
+    pub noise_w: f32,
 }
 
 #[derive(Clone, Deserialize, Default)]
 pub struct Language {
-    code: String,
-    #[allow(dead_code)]
-    family: Option<String>,
-    #[allow(dead_code)]
-    region: Option<String>,
-    #[allow(dead_code)]
-    name_native: Option<String>,
-    #[allow(dead_code)]
-    name_english: Option<String>,
+    pub code: String,
+    pub family: Option<String>,
+    pub region: Option<String>,
+    pub name_native: Option<String>,
+    pub name_english: Option<String>,
 }
 
 #[derive(Deserialize, Default)]
@@ -134,14 +130,13 @@ pub struct ModelConfig {
     pub audio: AudioConfig,
     pub num_speakers: u32,
     pub speaker_id_map: HashMap<String, i64>,
-    streaming: Option<bool>,
-    espeak: ESpeakConfig,
-    inference: InferenceConfig,
-    #[allow(dead_code)]
-    num_symbols: u32,
-    #[allow(dead_code)]
-    phoneme_map: HashMap<i64, char>,
-    phoneme_id_map: HashMap<char, Vec<i64>>,
+    pub streaming: Option<bool>,
+    pub espeak: ESpeakConfig,
+    pub inference: InferenceConfig,
+    pub num_symbols: u32,
+    pub phoneme_map: HashMap<i64, char>,
+    pub phoneme_id_map: HashMap<char, Vec<i64>>,
+    pub dataset: Option<String>,
 }
 
 #[derive(Debug, Clone, Default)]
