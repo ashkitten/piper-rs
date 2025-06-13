@@ -74,7 +74,7 @@ impl std::string::ToString for Phonemes {
 }
 
 pub trait PiperModel {
-    fn audio_output_info(&self) -> PiperResult<AudioInfo>;
+    fn audio_output_info(&self) -> AudioInfo;
     fn phonemize_text(&self, text: &str) -> PiperResult<Phonemes>;
     fn speak_batch(&self, phoneme_batches: Vec<String>) -> PiperResult<Vec<Audio>>;
     fn speak_one_sentence(&self, phonemes: String) -> PiperAudioResult;

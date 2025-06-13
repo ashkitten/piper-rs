@@ -147,7 +147,7 @@ impl PiperSpeechSynthesizer {
         chunk_padding: usize,
     ) -> PiperResult<RealtimeSpeechStream> {
         let provider = self.create_synthesis_task_provider(text, output_config);
-        let wavinfo = self.0.audio_output_info()?;
+        let wavinfo = self.0.audio_output_info();
         RealtimeSpeechStream::new(
             provider,
             chunk_size,
@@ -181,9 +181,9 @@ impl PiperSpeechSynthesizer {
         Ok(audio::write_wave_samples_to_file(
             filename,
             audio.to_i16_vec().iter(),
-            self.0.audio_output_info()?.sample_rate as u32,
-            self.0.audio_output_info()?.num_channels.try_into().unwrap(),
-            self.0.audio_output_info()?.sample_width.try_into().unwrap(),
+            self.0.audio_output_info().sample_rate as u32,
+            self.0.audio_output_info().num_channels.try_into().unwrap(),
+            self.0.audio_output_info().sample_width.try_into().unwrap(),
         )?)
     }
     #[inline(always)]
@@ -193,7 +193,7 @@ impl PiperSpeechSynthesizer {
 }
 
 impl PiperModel for PiperSpeechSynthesizer {
-    fn audio_output_info(&self) -> PiperResult<AudioInfo> {
+    fn audio_output_info(&self) -> AudioInfo {
         self.0.audio_output_info()
     }
     fn phonemize_text(&self, text: &str) -> PiperResult<Phonemes> {

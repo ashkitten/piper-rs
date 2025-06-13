@@ -8,7 +8,7 @@ use serde::Deserialize;
 mod audio;
 mod core;
 pub use audio::synth;
-use core::{Audio, AudioInfo, AudioSamples, AudioStreamIterator, Phonemes, PiperModel};
+pub use core::{Audio, AudioInfo, AudioSamples, AudioStreamIterator, Phonemes, PiperModel};
 pub use core::{PiperAudioResult, PiperError, PiperResult};
 
 use std::any::Any;
@@ -74,7 +74,7 @@ fn create_inference_session(model_path: &Path) -> Result<Session, ort::Error> {
 
 pub fn from_config_path(config_path: &Path) -> PiperResult<Arc<dyn PiperModel + Send + Sync>> {
     let (config, synth_config) = load_model_config(config_path)?;
-    if config.streaming.unwrap_or_default() {
+    if config.streaming {
         Ok(Arc::new(VitsStreamingModel::from_config(
             config,
             synth_config,
@@ -104,7 +104,7 @@ pub struct AudioConfig {
 
 #[derive(Deserialize, Default)]
 pub struct ESpeakConfig {
-    voice: String,
+    pub voice: String,
 }
 
 #[derive(Deserialize, Default, Clone)]
@@ -130,7 +130,8 @@ pub struct ModelConfig {
     pub audio: AudioConfig,
     pub num_speakers: u32,
     pub speaker_id_map: HashMap<String, i64>,
-    pub streaming: Option<bool>,
+    #[serde(default)]
+    pub streaming: bool,
     pub espeak: ESpeakConfig,
     pub inference: InferenceConfig,
     pub num_symbols: u32,
@@ -240,12 +241,12 @@ trait VitsModelCommons {
         Ok(phonemes.into())
     }
 
-    fn get_audio_output_info(&self) -> PiperResult<AudioInfo> {
-        Ok(AudioInfo {
+    fn get_audio_output_info(&self) -> AudioInfo {
+        AudioInfo {
             sample_rate: self.get_config().audio.sample_rate as usize,
             num_channels: 1usize,
             sample_width: 2usize,
-        })
+        }
     }
 }
 
@@ -422,7 +423,7 @@ impl PiperModel for VitsModel {
     fn properties(&self) -> PiperResult<HashMap<String, String>> {
         Ok(self.get_properties())
     }
-    fn audio_output_info(&self) -> PiperResult<AudioInfo> {
+    fn audio_output_info(&self) -> AudioInfo {
         self.get_audio_output_info()
     }
 }
@@ -597,7 +598,7 @@ impl PiperModel for VitsStreamingModel {
     fn properties(&self) -> PiperResult<HashMap<String, String>> {
         Ok(self.get_properties())
     }
-    fn audio_output_info(&self) -> PiperResult<AudioInfo> {
+    fn audio_output_info(&self) -> AudioInfo {
         self.get_audio_output_info()
     }
     fn supports_streaming_output(&self) -> bool {
